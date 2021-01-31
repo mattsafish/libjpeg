@@ -394,7 +394,7 @@ EXTERN(void) jinit2_merged_upsampler JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit_memory_mgr JPP((j_common_ptr cinfo));
 
 /* Utility routines in jutils.c */
-EXTERN(long) jdiv_round_up JPP((long a, long b));
+EXTERN(long) jdiv2_round_up JPP((long a, long b));
 EXTERN(long) jround2_up JPP((long a, long b));
 EXTERN(void) jcopy2_sample_rows JPP((JSAMPARRAY input_array, int source_row,
 				    JSAMPARRAY output_array, int dest_row,
