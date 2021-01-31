@@ -318,7 +318,7 @@ struct jpeg_color_quantizer {
 #define jinit2_1pass_quantizer	jI1Quant
 #define jinit2_2pass_quantizer	jI2Quant
 #define jinit2_merged_upsampler	jIMUpsampler
-#define jinit_memory_mgr	jIMemMgr
+#define jinit2_memory_mgr	jIMemMgr
 #define jdiv2_round_up		jDivRound
 #define jround2_up		jRound
 #define jzero_far		jZeroFar
@@ -391,7 +391,7 @@ EXTERN(void) jinit2_1pass_quantizer JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit2_2pass_quantizer JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit2_merged_upsampler JPP((j_decompress_ptr cinfo));
 /* Memory manager initialization */
-EXTERN(void) jinit_memory_mgr JPP((j_common_ptr cinfo));
+EXTERN(void) jinit2_memory_mgr JPP((j_common_ptr cinfo));
 
 /* Utility routines in jutils.c */
 EXTERN(long) jdiv2_round_up JPP((long a, long b));

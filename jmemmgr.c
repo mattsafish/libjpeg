@@ -1026,7 +1026,7 @@ self_destruct (j_common_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_memory_mgr (j_common_ptr cinfo)
+jinit2_memory_mgr (j_common_ptr cinfo)
 {
   my_mem_ptr mem;
   long max_to_use;

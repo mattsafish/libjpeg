@@ -118,7 +118,7 @@ jpeg2_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
  */
 
 GLOBAL(JDIMENSION)
-jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
+jpeg2_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
 		     JDIMENSION num_lines)
 {
   JDIMENSION lines_per_iMCU_row;
