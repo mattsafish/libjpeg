@@ -36,11 +36,11 @@ LOCAL(boolean) output_pass_setup JPP((j_decompress_ptr cinfo));
  */
 
 GLOBAL(boolean)
-jpeg_start_decompress (j_decompress_ptr cinfo)
+jpeg2_start_decompress (j_decompress_ptr cinfo)
 {
   if (cinfo->global_state == DSTATE_READY) {
     /* First call: initialize master control, select active modules */
-    jinit_master_decompress(cinfo);
+    jinit2_master_decompress(cinfo);
     if (cinfo->buffered_image) {
       /* No more work here; expecting jpeg_start_output next */
       cinfo->global_state = DSTATE_BUFIMAGE;
@@ -150,7 +150,7 @@ output_pass_setup (j_decompress_ptr cinfo)
  */
 
 GLOBAL(JDIMENSION)
-jpeg_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
+jpeg2_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
 		     JDIMENSION max_lines)
 {
   JDIMENSION row_ctr;
@@ -183,7 +183,7 @@ jpeg_read_scanlines (j_decompress_ptr cinfo, JSAMPARRAY scanlines,
  */
 
 GLOBAL(JDIMENSION)
-jpeg_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
+jpeg2_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
 		    JDIMENSION max_lines)
 {
   JDIMENSION lines_per_iMCU_row;
@@ -226,7 +226,7 @@ jpeg_read_raw_data (j_decompress_ptr cinfo, JSAMPIMAGE data,
  */
 
 GLOBAL(boolean)
-jpeg_start_output (j_decompress_ptr cinfo, int scan_number)
+jpeg2_start_output (j_decompress_ptr cinfo, int scan_number)
 {
   if (cinfo->global_state != DSTATE_BUFIMAGE &&
       cinfo->global_state != DSTATE_PRESCAN)
@@ -251,7 +251,7 @@ jpeg_start_output (j_decompress_ptr cinfo, int scan_number)
  */
 
 GLOBAL(boolean)
-jpeg_finish_output (j_decompress_ptr cinfo)
+jpeg2_finish_output (j_decompress_ptr cinfo)
 {
   if ((cinfo->global_state == DSTATE_SCANNING ||
        cinfo->global_state == DSTATE_RAW_OK) && cinfo->buffered_image) {

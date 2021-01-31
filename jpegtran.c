@@ -364,7 +364,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 
 #ifdef C_PROGRESSIVE_SUPPORTED
     if (simple_progressive)	/* process -progressive; -scans can override */
-      jpeg_simple_progression(cinfo);
+      jpeg2_simple_progression(cinfo);
 #endif
 
 #ifdef C_MULTISCAN_FILES_SUPPORTED
@@ -409,10 +409,10 @@ main (int argc, char **argv)
     progname = "jpegtran";	/* in case C library doesn't provide it */
 
   /* Initialize the JPEG decompression object with default error handling. */
-  srcinfo.err = jpeg_std_error(&jsrcerr);
+  srcinfo.err = jpeg2_std_error(&jsrcerr);
   jpeg_create_decompress(&srcinfo);
   /* Initialize the JPEG compression object with default error handling. */
-  dstinfo.err = jpeg_std_error(&jdsterr);
+  dstinfo.err = jpeg2_std_error(&jdsterr);
   jpeg_create_compress(&dstinfo);
 
   /* Now safe to enable signal catcher.
@@ -474,13 +474,13 @@ main (int argc, char **argv)
 #endif
 
   /* Specify data source for decompression */
-  jpeg_stdio_src(&srcinfo, fp);
+  jpeg2_stdio_src(&srcinfo, fp);
 
   /* Enable saving of extra markers that we want to copy */
   jcopy_markers_setup(&srcinfo, copyoption);
 
   /* Read file header */
-  (void) jpeg_read_header(&srcinfo, TRUE);
+  (void) jpeg2_read_header(&srcinfo, TRUE);
 
   /* Adjust default decompression parameters */
   if (scaleoption != NULL)
@@ -501,10 +501,10 @@ main (int argc, char **argv)
 #endif
 
   /* Read source file as DCT coefficients */
-  src_coef_arrays = jpeg_read_coefficients(&srcinfo);
+  src_coef_arrays = jpeg2_read_coefficients(&srcinfo);
 
   /* Initialize destination compression parameters from source values */
-  jpeg_copy_critical_parameters(&srcinfo, &dstinfo);
+  jpeg2_copy_critical_parameters(&srcinfo, &dstinfo);
 
   /* Adjust destination parameters if required by transform options;
    * also find out which set of coefficient arrays will hold the output.
@@ -542,10 +542,10 @@ main (int argc, char **argv)
   file_index = parse_switches(&dstinfo, argc, argv, 0, TRUE);
 
   /* Specify data destination for compression */
-  jpeg_stdio_dest(&dstinfo, fp);
+  jpeg2_stdio_dest(&dstinfo, fp);
 
   /* Start compressor (note no image data is actually written here) */
-  jpeg_write_coefficients(&dstinfo, dst_coef_arrays);
+  jpeg2_write_coefficients(&dstinfo, dst_coef_arrays);
 
   /* Copy to the output file any extra markers that we want to preserve */
   jcopy_markers_execute(&srcinfo, &dstinfo, copyoption);
@@ -558,10 +558,10 @@ main (int argc, char **argv)
 #endif
 
   /* Finish compression and release memory */
-  jpeg_finish_compress(&dstinfo);
-  jpeg_destroy_compress(&dstinfo);
-  (void) jpeg_finish_decompress(&srcinfo);
-  jpeg_destroy_decompress(&srcinfo);
+  jpeg2_finish_compress(&dstinfo);
+  jpeg2_destroy_compress(&dstinfo);
+  (void) jpeg2_finish_decompress(&srcinfo);
+  jpeg2_destroy_decompress(&srcinfo);
 
   /* Close output file, if we opened it */
   if (fp != stdout)

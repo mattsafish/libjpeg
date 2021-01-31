@@ -474,7 +474,7 @@ process_data_crank_post (j_decompress_ptr cinfo,
  */
 
 GLOBAL(void)
-jinit_d_main_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
+jinit2_d_main_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 {
   my_main_ptr mainp;
   int ci, rgroup, ngroups;

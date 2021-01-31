@@ -109,7 +109,7 @@ expand_bottom_edge (JSAMPARRAY image_data, JDIMENSION num_cols,
   register int row;
 
   for (row = input_rows; row < output_rows; row++) {
-    jcopy_sample_rows(image_data, input_rows-1, image_data, row,
+    jcopy2_sample_rows(image_data, input_rows-1, image_data, row,
 		      1, num_cols);
   }
 }
@@ -220,7 +220,7 @@ pre_process_context (j_compress_ptr cinfo,
 	for (ci = 0; ci < cinfo->num_components; ci++) {
 	  int row;
 	  for (row = 1; row <= cinfo->max_v_samp_factor; row++) {
-	    jcopy_sample_rows(prep->color_buf[ci], 0,
+	    jcopy2_sample_rows(prep->color_buf[ci], 0,
 			      prep->color_buf[ci], -row,
 			      1, cinfo->image_width);
 	  }
@@ -315,7 +315,7 @@ create_context_buffer (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+jinit2_c_prep_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_prep_ptr prep;
   int ci;

@@ -149,7 +149,7 @@ arith_decode (j_decompress_ptr cinfo, unsigned char *st)
    * Qe values and probability estimation state machine
    */
   sv = *st;
-  qe = jpeg_aritab[sv & 0x7F];	/* => Qe_Value */
+  qe = jpeg2_aritab[sv & 0x7F];	/* => Qe_Value */
   nl = qe & 0xFF; qe >>= 8;	/* Next_Index_LPS + Switch_MPS */
   nm = qe & 0xFF; qe >>= 8;	/* Next_Index_MPS */
 
@@ -761,7 +761,7 @@ finish_pass (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_arith_decoder (j_decompress_ptr cinfo)
+jinit2_arith_decoder (j_decompress_ptr cinfo)
 {
   arith_entropy_ptr entropy;
   int i;

@@ -435,7 +435,7 @@ null_method (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_color_converter (j_compress_ptr cinfo)
+jinit2_color_converter (j_compress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;
 

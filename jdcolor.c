@@ -487,7 +487,7 @@ grayscale_convert (j_decompress_ptr cinfo,
 		   JSAMPIMAGE input_buf, JDIMENSION input_row,
 		   JSAMPARRAY output_buf, int num_rows)
 {
-  jcopy_sample_rows(input_buf[0], (int) input_row, output_buf, 0,
+  jcopy2_sample_rows(input_buf[0], (int) input_row, output_buf, 0,
 		    num_rows, cinfo->output_width);
 }
 
@@ -589,7 +589,7 @@ start_pass_dcolor (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_color_deconverter (j_decompress_ptr cinfo)
+jinit2_color_deconverter (j_decompress_ptr cinfo)
 {
   my_cconvert_ptr cconvert;
   int ci;

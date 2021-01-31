@@ -86,7 +86,7 @@ use_merged_upsample (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
+jpeg2_calc_output_dimensions (j_decompress_ptr cinfo)
 /* Do computations that are needed before master selection phase.
  * This function is used for full decompression.
  */
@@ -141,11 +141,11 @@ jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
        ci++, compptr++) {
     /* Size in samples, after IDCT scaling */
     compptr->downsampled_width = (JDIMENSION)
-      jdiv_round_up((long) cinfo->image_width *
+      jdiv2_round_up((long) cinfo->image_width *
 		    (long) (compptr->h_samp_factor * compptr->DCT_h_scaled_size),
 		    (long) (cinfo->max_h_samp_factor * cinfo->block_size));
     compptr->downsampled_height = (JDIMENSION)
-      jdiv_round_up((long) cinfo->image_height *
+      jdiv2_round_up((long) cinfo->image_height *
 		    (long) (compptr->v_samp_factor * compptr->DCT_v_scaled_size),
 		    (long) (cinfo->max_v_samp_factor * cinfo->block_size));
   }
@@ -281,7 +281,7 @@ master_selection (j_decompress_ptr cinfo)
     ERREXIT1(cinfo, JERR_BAD_PRECISION, cinfo->data_precision);
 
   /* Initialize dimensions and other stuff */
-  jpeg_calc_output_dimensions(cinfo);
+  jpeg2_calc_output_dimensions(cinfo);
   prepare_range_limit_table(cinfo);
 
   /* Sanity check on image dimensions */
@@ -327,7 +327,7 @@ master_selection (j_decompress_ptr cinfo)
 
     if (cinfo->enable_1pass_quant) {
 #ifdef QUANT_1PASS_SUPPORTED
-      jinit_1pass_quantizer(cinfo);
+      jinit2_1pass_quantizer(cinfo);
       master->quantizer_1pass = cinfo->cquantize;
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -337,7 +337,7 @@ master_selection (j_decompress_ptr cinfo)
     /* We use the 2-pass code to map to external colormaps. */
     if (cinfo->enable_2pass_quant || cinfo->enable_external_quant) {
 #ifdef QUANT_2PASS_SUPPORTED
-      jinit_2pass_quantizer(cinfo);
+      jinit2_2pass_quantizer(cinfo);
       master->quantizer_2pass = cinfo->cquantize;
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
@@ -352,31 +352,31 @@ master_selection (j_decompress_ptr cinfo)
   if (! cinfo->raw_data_out) {
     if (master->using_merged_upsample) {
 #ifdef UPSAMPLE_MERGING_SUPPORTED
-      jinit_merged_upsampler(cinfo); /* does color conversion too */
+      jinit2_merged_upsampler(cinfo); /* does color conversion too */
 #else
       ERREXIT(cinfo, JERR_NOT_COMPILED);
 #endif
     } else {
-      jinit_color_deconverter(cinfo);
-      jinit_upsampler(cinfo);
+      jinit2_color_deconverter(cinfo);
+      jinit2_upsampler(cinfo);
     }
-    jinit_d_post_controller(cinfo, cinfo->enable_2pass_quant);
+    jinit2_d_post_controller(cinfo, cinfo->enable_2pass_quant);
   }
   /* Inverse DCT */
-  jinit_inverse_dct(cinfo);
+  jinit2_inverse_dct(cinfo);
   /* Entropy decoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_decoder(cinfo);
+    jinit2_arith_decoder(cinfo);
   else {
-    jinit_huff_decoder(cinfo);
+    jinit2_huff_decoder(cinfo);
   }
 
   /* Initialize principal buffer controllers. */
   use_c_buffer = cinfo->inputctl->has_multiple_scans || cinfo->buffered_image;
-  jinit_d_coef_controller(cinfo, use_c_buffer);
+  jinit2_d_coef_controller(cinfo, use_c_buffer);
 
   if (! cinfo->raw_data_out)
-    jinit_d_main_controller(cinfo, FALSE /* never need full buffer here */);
+    jinit2_d_main_controller(cinfo, FALSE /* never need full buffer here */);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);
@@ -498,7 +498,7 @@ finish_output_pass (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_new_colormap (j_decompress_ptr cinfo)
+jpeg2_new_colormap (j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr) cinfo->master;
 
@@ -526,7 +526,7 @@ jpeg_new_colormap (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_master_decompress (j_decompress_ptr cinfo)
+jinit2_master_decompress (j_decompress_ptr cinfo)
 {
   my_master_ptr master;
 

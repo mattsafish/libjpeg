@@ -26,7 +26,7 @@
  */
 
 GLOBAL(void)
-jpeg_abort (j_common_ptr cinfo)
+jpeg2_abort (j_common_ptr cinfo)
 {
   int pool;
 
@@ -66,7 +66,7 @@ jpeg_abort (j_common_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_destroy (j_common_ptr cinfo)
+jpeg2_destroy (j_common_ptr cinfo)
 {
   /* We need only tell the memory manager to release everything. */
   /* NB: mem pointer is NULL if memory mgr failed to initialize. */
@@ -83,7 +83,7 @@ jpeg_destroy (j_common_ptr cinfo)
  */
 
 GLOBAL(JQUANT_TBL *)
-jpeg_alloc_quant_table (j_common_ptr cinfo)
+jpeg2_alloc_quant_table (j_common_ptr cinfo)
 {
   JQUANT_TBL *tbl;
 
@@ -95,7 +95,7 @@ jpeg_alloc_quant_table (j_common_ptr cinfo)
 
 
 GLOBAL(JHUFF_TBL *)
-jpeg_alloc_huff_table (j_common_ptr cinfo)
+jpeg2_alloc_huff_table (j_common_ptr cinfo)
 {
   JHUFF_TBL *tbl;
 

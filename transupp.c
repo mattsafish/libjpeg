@@ -104,7 +104,7 @@ do_crop (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	 dst_blk_y + y_crop_blocks,
 	 (JDIMENSION) compptr->v_samp_factor, FALSE);
       for (offset_y = 0; offset_y < compptr->v_samp_factor; offset_y++) {
-	jcopy_block_row(src_buffer[offset_y] + x_crop_blocks,
+	jcopy2_block_row(src_buffer[offset_y] + x_crop_blocks,
 			dst_buffer[offset_y],
 			compptr->width_in_blocks);
       }
@@ -171,7 +171,7 @@ do_crop_ext (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	    FMEMZERO(dst_buffer[offset_y],
 		     x_crop_blocks * SIZEOF(JBLOCK));
 	  }
-	  jcopy_block_row(src_buffer[offset_y],
+	  jcopy2_block_row(src_buffer[offset_y],
 			  dst_buffer[offset_y] + x_crop_blocks,
 			  comp_width);
 	  if (compptr->width_in_blocks > comp_width + x_crop_blocks) {
@@ -181,7 +181,7 @@ do_crop_ext (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 		       comp_width - x_crop_blocks) * SIZEOF(JBLOCK));
 	  }
 	} else {
-	  jcopy_block_row(src_buffer[offset_y] + x_crop_blocks,
+	  jcopy2_block_row(src_buffer[offset_y] + x_crop_blocks,
 			  dst_buffer[offset_y],
 			  compptr->width_in_blocks);
 	}
@@ -279,7 +279,7 @@ do_flip_h_no_crop (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	   * source and destination areas.  Sigh.
 	   */
 	  for (blk_x = 0; blk_x < compptr->width_in_blocks; blk_x++) {
-	    jcopy_block_row(buffer[offset_y] + blk_x + x_crop_blocks,
+	    jcopy2_block_row(buffer[offset_y] + blk_x + x_crop_blocks,
 			    buffer[offset_y] + blk_x,
 			    (JDIMENSION) 1);
 	  }
@@ -341,7 +341,7 @@ do_flip_h (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	    }
 	  } else {
 	    /* Copy last partial block(s) verbatim */
-	    jcopy_block_row(src_row_ptr + dst_blk_x + x_crop_blocks,
+	    jcopy2_block_row(src_row_ptr + dst_blk_x + x_crop_blocks,
 			    dst_row_ptr + dst_blk_x,
 			    (JDIMENSION) 1);
 	  }
@@ -422,7 +422,7 @@ do_flip_v (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	  }
 	} else {
 	  /* Just copy row verbatim. */
-	  jcopy_block_row(src_buffer[offset_y] + x_crop_blocks,
+	  jcopy2_block_row(src_buffer[offset_y] + x_crop_blocks,
 			  dst_buffer[offset_y],
 			  compptr->width_in_blocks);
 	}
@@ -728,7 +728,7 @@ do_rot_180 (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
 	      }
 	    } else {
 	      /* Any remaining right-edge blocks are only copied. */
-	      jcopy_block_row(src_row_ptr + dst_blk_x + x_crop_blocks,
+	      jcopy2_block_row(src_row_ptr + dst_blk_x + x_crop_blocks,
 			      dst_row_ptr + dst_blk_x,
 			      (JDIMENSION) 1);
 	    }
@@ -1130,10 +1130,10 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
     /* Now adjust so that upper left corner falls at an iMCU boundary */
     if (info->transform == JXFORM_WIPE) {
       /* Ensure the effective wipe region will cover the requested */
-      info->drop_width = (JDIMENSION) jdiv_round_up
+      info->drop_width = (JDIMENSION) jdiv2_round_up
 	((long) (info->crop_width + (xoffset % info->iMCU_sample_width)),
 	 (long) info->iMCU_sample_width);
-      info->drop_height = (JDIMENSION) jdiv_round_up
+      info->drop_height = (JDIMENSION) jdiv2_round_up
 	((long) (info->crop_height + (yoffset % info->iMCU_sample_height)),
 	 (long) info->iMCU_sample_height);
     } else {
@@ -1235,10 +1235,10 @@ jtransform_request_workspace (j_decompress_ptr srcinfo,
       (*srcinfo->mem->alloc_small) ((j_common_ptr) srcinfo, JPOOL_IMAGE,
 	SIZEOF(jvirt_barray_ptr) * info->num_components);
     width_in_iMCUs = (JDIMENSION)
-      jdiv_round_up((long) info->output_width,
+      jdiv2_round_up((long) info->output_width,
 		    (long) info->iMCU_sample_width);
     height_in_iMCUs = (JDIMENSION)
-      jdiv_round_up((long) info->output_height,
+      jdiv2_round_up((long) info->output_height,
 		    (long) info->iMCU_sample_height);
     for (ci = 0; ci < info->num_components; ci++) {
       compptr = srcinfo->comp_info + ci;
@@ -1502,7 +1502,7 @@ jtransform_adjust_parameters (j_decompress_ptr srcinfo,
        * We have to preserve the source's quantization table number, however.
        */
       int sv_quant_tbl_no = dstinfo->comp_info[0].quant_tbl_no;
-      jpeg_set_colorspace(dstinfo, JCS_GRAYSCALE);
+      jpeg2_set_colorspace(dstinfo, JCS_GRAYSCALE);
       dstinfo->comp_info[0].quant_tbl_no = sv_quant_tbl_no;
     } else {
       /* Sorry, can't do it */
@@ -1700,12 +1700,12 @@ jcopy_markers_setup (j_decompress_ptr srcinfo, JCOPY_OPTION option)
 
   /* Save comments except under NONE option */
   if (option != JCOPYOPT_NONE) {
-    jpeg_save_markers(srcinfo, JPEG_COM, 0xFFFF);
+    jpeg2_save_markers(srcinfo, JPEG_COM, 0xFFFF);
   }
   /* Save all types of APPn markers iff ALL option */
   if (option == JCOPYOPT_ALL) {
     for (m = 0; m < 16; m++)
-      jpeg_save_markers(srcinfo, JPEG_APP0 + m, 0xFFFF);
+      jpeg2_save_markers(srcinfo, JPEG_APP0 + m, 0xFFFF);
   }
 #endif /* SAVE_MARKERS_SUPPORTED */
 }
@@ -1751,12 +1751,12 @@ jcopy_markers_execute (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
     /* We could use jpeg_write_marker if the data weren't FAR... */
     {
       unsigned int i;
-      jpeg_write_m_header(dstinfo, marker->marker, marker->data_length);
+      jpeg2_write_m_header(dstinfo, marker->marker, marker->data_length);
       for (i = 0; i < marker->data_length; i++)
-	jpeg_write_m_byte(dstinfo, marker->data[i]);
+	jpeg2_write_m_byte(dstinfo, marker->data[i]);
     }
 #else
-    jpeg_write_marker(dstinfo, marker->marker,
+    jpeg2_write_marker(dstinfo, marker->marker,
 		      marker->data, marker->data_length);
 #endif
   }

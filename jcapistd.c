@@ -36,19 +36,19 @@
  */
 
 GLOBAL(void)
-jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
+jpeg2_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
 {
   if (cinfo->global_state != CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
   if (write_all_tables)
-    jpeg_suppress_tables(cinfo, FALSE);	/* mark all tables to be written */
+    jpeg2_suppress_tables(cinfo, FALSE);	/* mark all tables to be written */
 
   /* (Re)initialize error mgr and destination modules */
   (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
   /* Perform master selection of active modules */
-  jinit_compress_master(cinfo);
+  jinit2_compress_master(cinfo);
   /* Set up for the first pass */
   (*cinfo->master->prepare_for_pass) (cinfo);
   /* Ready for application to drive first pass through jpeg_write_scanlines
@@ -75,7 +75,7 @@ jpeg_start_compress (j_compress_ptr cinfo, boolean write_all_tables)
  */
 
 GLOBAL(JDIMENSION)
-jpeg_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
+jpeg2_write_scanlines (j_compress_ptr cinfo, JSAMPARRAY scanlines,
 		      JDIMENSION num_lines)
 {
   JDIMENSION row_ctr, rows_left;

@@ -514,7 +514,7 @@ get_dht (j_decompress_ptr cinfo)
       ERREXIT1(cinfo, JERR_DHT_INDEX, index);
 
     if (*htblptr == NULL)
-      *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+      *htblptr = jpeg2_alloc_huff_table((j_common_ptr) cinfo);
   
     MEMCOPY((*htblptr)->bits, bits, SIZEOF((*htblptr)->bits));
     MEMCOPY((*htblptr)->huffval, huffval, SIZEOF((*htblptr)->huffval));
@@ -554,7 +554,7 @@ get_dqt (j_decompress_ptr cinfo)
       ERREXIT1(cinfo, JERR_DQT_INDEX, n);
       
     if (cinfo->quant_tbl_ptrs[n] == NULL)
-      cinfo->quant_tbl_ptrs[n] = jpeg_alloc_quant_table((j_common_ptr) cinfo);
+      cinfo->quant_tbl_ptrs[n] = jpeg2_alloc_quant_table((j_common_ptr) cinfo);
     quant_ptr = cinfo->quant_tbl_ptrs[n];
 
     if (prec) {
@@ -584,7 +584,7 @@ get_dqt (j_decompress_ptr cinfo)
     case (5*5): natural_order = jpeg_natural_order5; break;
     case (6*6): natural_order = jpeg_natural_order6; break;
     case (7*7): natural_order = jpeg_natural_order7; break;
-    default:    natural_order = jpeg_natural_order;  break;
+    default:    natural_order = jpeg2_natural_order;  break;
     }
 
     for (i = 0; i < count; i++) {
@@ -1340,7 +1340,7 @@ read_restart_marker (j_decompress_ptr cinfo)
  */
 
 GLOBAL(boolean)
-jpeg_resync_to_restart (j_decompress_ptr cinfo, int desired)
+jpeg2_resync_to_restart (j_decompress_ptr cinfo, int desired)
 {
   int marker = cinfo->unread_marker;
   int action = 1;
@@ -1410,7 +1410,7 @@ reset_marker_reader (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_marker_reader (j_decompress_ptr cinfo)
+jinit2_marker_reader (j_decompress_ptr cinfo)
 {
   my_marker_ptr marker;
   int i;
@@ -1448,7 +1448,7 @@ jinit_marker_reader (j_decompress_ptr cinfo)
 #ifdef SAVE_MARKERS_SUPPORTED
 
 GLOBAL(void)
-jpeg_save_markers (j_decompress_ptr cinfo, int marker_code,
+jpeg2_save_markers (j_decompress_ptr cinfo, int marker_code,
 		   unsigned int length_limit)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
@@ -1497,7 +1497,7 @@ jpeg_save_markers (j_decompress_ptr cinfo, int marker_code,
  */
 
 GLOBAL(void)
-jpeg_set_marker_processor (j_decompress_ptr cinfo, int marker_code,
+jpeg2_set_marker_processor (j_decompress_ptr cinfo, int marker_code,
 			   jpeg_marker_parser_method routine)
 {
   my_marker_ptr marker = (my_marker_ptr) cinfo->marker;

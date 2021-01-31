@@ -43,12 +43,12 @@
  */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jpeg_std_message_table	jMsgTable
+#define jpeg2_std_message_table	jMsgTable
 #endif
 
 #define JMESSAGE(code,string)	string ,
 
-const char * const jpeg_std_message_table[] = {
+const char * const jpeg2_std_message_table[] = {
 #include "jerror.h"
   NULL
 };
@@ -74,7 +74,7 @@ error_exit (j_common_ptr cinfo)
   (*cinfo->err->output_message) (cinfo);
 
   /* Let the memory manager delete any temp files before we die */
-  jpeg_destroy(cinfo);
+  jpeg2_destroy(cinfo);
 
   exit(EXIT_FAILURE);
 }
@@ -229,7 +229,7 @@ reset_error_mgr (j_common_ptr cinfo)
  */
 
 GLOBAL(struct jpeg_error_mgr *)
-jpeg_std_error (struct jpeg_error_mgr * err)
+jpeg2_std_error (struct jpeg_error_mgr * err)
 {
   err->error_exit = error_exit;
   err->emit_message = emit_message;
@@ -242,7 +242,7 @@ jpeg_std_error (struct jpeg_error_mgr * err)
   err->msg_code = 0;		/* may be useful as a flag for "no error" */
 
   /* Initialize message table pointers */
-  err->jpeg_message_table = jpeg_std_message_table;
+  err->jpeg_message_table = jpeg2_std_message_table;
   err->last_jpeg_message = (int) JMSG_LASTMSGCODE - 1;
 
   err->addon_message_table = NULL;

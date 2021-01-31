@@ -562,7 +562,7 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
       last_block_column = compptr->width_in_blocks - 1;
       for (block_num = 0; block_num <= last_block_column; block_num++) {
 	/* Fetch current DCT block into workspace so we can modify it. */
-	jcopy_block_row(buffer_ptr, (JBLOCKROW) workspace, (JDIMENSION) 1);
+	jcopy2_block_row(buffer_ptr, (JBLOCKROW) workspace, (JDIMENSION) 1);
 	/* Update DC values */
 	if (block_num < last_block_column) {
 	  DC3 = (int) prev_block_row[1][0];
@@ -675,7 +675,7 @@ decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
  */
 
 GLOBAL(void)
-jinit_d_coef_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
+jinit2_d_coef_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 {
   my_coef_ptr coef;
 
@@ -708,9 +708,9 @@ jinit_d_coef_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 #endif
       coef->whole_image[ci] = (*cinfo->mem->request_virt_barray)
 	((j_common_ptr) cinfo, JPOOL_IMAGE, TRUE,
-	 (JDIMENSION) jround_up((long) compptr->width_in_blocks,
+	 (JDIMENSION) jround2_up((long) compptr->width_in_blocks,
 				(long) compptr->h_samp_factor),
-	 (JDIMENSION) jround_up((long) compptr->height_in_blocks,
+	 (JDIMENSION) jround2_up((long) compptr->height_in_blocks,
 				(long) compptr->v_samp_factor),
 	 (JDIMENSION) access_rows);
     }

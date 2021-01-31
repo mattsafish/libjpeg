@@ -229,7 +229,7 @@ jinit_write_ppm (j_decompress_ptr cinfo)
   dest->pub.finish_output = finish_output_ppm;
 
   /* Calculate output image dimensions so we can allocate space */
-  jpeg_calc_output_dimensions(cinfo);
+  jpeg2_calc_output_dimensions(cinfo);
 
   /* Create physical I/O buffer.  Note we make this near on a PC. */
   dest->samples_per_row = cinfo->output_width * cinfo->out_color_components;

@@ -819,7 +819,7 @@ new_color_map_1_quant (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_1pass_quantizer (j_decompress_ptr cinfo)
+jinit2_1pass_quantizer (j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize;
 

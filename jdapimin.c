@@ -28,7 +28,7 @@
  */
 
 GLOBAL(void)
-jpeg_CreateDecompress (j_decompress_ptr cinfo, int version, size_t structsize)
+jpeg2_CreateDecompress (j_decompress_ptr cinfo, int version, size_t structsize)
 {
   int i;
 
@@ -74,10 +74,10 @@ jpeg_CreateDecompress (j_decompress_ptr cinfo, int version, size_t structsize)
    * for COM, APPn markers before calling jpeg_read_header.
    */
   cinfo->marker_list = NULL;
-  jinit_marker_reader(cinfo);
+  jinit2_marker_reader(cinfo);
 
   /* And initialize the overall input controller. */
-  jinit_input_controller(cinfo);
+  jinit2_input_controller(cinfo);
 
   /* OK, I'm ready */
   cinfo->global_state = DSTATE_START;
@@ -89,9 +89,9 @@ jpeg_CreateDecompress (j_decompress_ptr cinfo, int version, size_t structsize)
  */
 
 GLOBAL(void)
-jpeg_destroy_decompress (j_decompress_ptr cinfo)
+jpeg2_destroy_decompress (j_decompress_ptr cinfo)
 {
-  jpeg_destroy((j_common_ptr) cinfo); /* use common routine */
+  jpeg2_destroy((j_common_ptr) cinfo); /* use common routine */
 }
 
 
@@ -101,9 +101,9 @@ jpeg_destroy_decompress (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_abort_decompress (j_decompress_ptr cinfo)
+jpeg2_abort_decompress (j_decompress_ptr cinfo)
 {
-  jpeg_abort((j_common_ptr) cinfo); /* use common routine */
+  jpeg2_abort((j_common_ptr) cinfo); /* use common routine */
 }
 
 
@@ -242,7 +242,7 @@ default_decompress_parms (j_decompress_ptr cinfo)
  */
 
 GLOBAL(int)
-jpeg_read_header (j_decompress_ptr cinfo, boolean require_image)
+jpeg2_read_header (j_decompress_ptr cinfo, boolean require_image)
 {
   int retcode;
 
@@ -250,7 +250,7 @@ jpeg_read_header (j_decompress_ptr cinfo, boolean require_image)
       cinfo->global_state != DSTATE_INHEADER)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
 
-  retcode = jpeg_consume_input(cinfo);
+  retcode = jpeg2_consume_input(cinfo);
 
   switch (retcode) {
   case JPEG_REACHED_SOS:
@@ -263,7 +263,7 @@ jpeg_read_header (j_decompress_ptr cinfo, boolean require_image)
      * call jpeg_abort, but we can't change it now for compatibility reasons.
      * A side effect is to free any temporary memory (there shouldn't be any).
      */
-    jpeg_abort((j_common_ptr) cinfo); /* sets state = DSTATE_START */
+    jpeg2_abort((j_common_ptr) cinfo); /* sets state = DSTATE_START */
     retcode = JPEG_HEADER_TABLES_ONLY;
     break;
   case JPEG_SUSPENDED:
@@ -288,7 +288,7 @@ jpeg_read_header (j_decompress_ptr cinfo, boolean require_image)
  */
 
 GLOBAL(int)
-jpeg_consume_input (j_decompress_ptr cinfo)
+jpeg2_consume_input (j_decompress_ptr cinfo)
 {
   int retcode = JPEG_SUSPENDED;
 
@@ -335,7 +335,7 @@ jpeg_consume_input (j_decompress_ptr cinfo)
  */
 
 GLOBAL(boolean)
-jpeg_input_complete (j_decompress_ptr cinfo)
+jpeg2_input_complete (j_decompress_ptr cinfo)
 {
   /* Check for valid jpeg object */
   if (cinfo->global_state < DSTATE_START ||
@@ -350,7 +350,7 @@ jpeg_input_complete (j_decompress_ptr cinfo)
  */
 
 GLOBAL(boolean)
-jpeg_has_multiple_scans (j_decompress_ptr cinfo)
+jpeg2_has_multiple_scans (j_decompress_ptr cinfo)
 {
   /* Only valid after jpeg_read_header completes */
   if (cinfo->global_state < DSTATE_READY ||
@@ -370,7 +370,7 @@ jpeg_has_multiple_scans (j_decompress_ptr cinfo)
  */
 
 GLOBAL(boolean)
-jpeg_finish_decompress (j_decompress_ptr cinfo)
+jpeg2_finish_decompress (j_decompress_ptr cinfo)
 {
   if ((cinfo->global_state == DSTATE_SCANNING ||
        cinfo->global_state == DSTATE_RAW_OK) && ! cinfo->buffered_image) {
@@ -394,6 +394,6 @@ jpeg_finish_decompress (j_decompress_ptr cinfo)
   /* Do final cleanup */
   (*cinfo->src->term_source) (cinfo);
   /* We can use jpeg_abort to release memory and reset global_state */
-  jpeg_abort((j_common_ptr) cinfo);
+  jpeg2_abort((j_common_ptr) cinfo);
   return TRUE;
 }

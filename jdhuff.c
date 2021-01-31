@@ -1266,7 +1266,7 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	     * Note: the extra entries in jpeg_natural_order[] will save us
 	     * if k >= DCTSIZE2, which could happen if the data is corrupted.
 	     */
-	    (*block)[jpeg_natural_order[k]] = (JCOEF) s;
+	    (*block)[jpeg2_natural_order[k]] = (JCOEF) s;
 	  } else {
 	    if (r != 15)
 	      goto EndOfBlock;
@@ -1518,7 +1518,7 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_huff_decoder (j_decompress_ptr cinfo)
+jinit2_huff_decoder (j_decompress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;

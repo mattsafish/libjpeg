@@ -216,7 +216,7 @@ int_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
     }
     /* Generate any additional output rows by duplicating the first one */
     if (v_expand > 1) {
-      jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
+      jcopy2_sample_rows(output_data, outrow, output_data, outrow+1,
 			v_expand-1, cinfo->output_width);
     }
     inrow++;
@@ -278,7 +278,7 @@ h2v2_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
       *outptr++ = invalue;
       *outptr++ = invalue;
     }
-    jcopy_sample_rows(output_data, outrow, output_data, outrow+1,
+    jcopy2_sample_rows(output_data, outrow, output_data, outrow+1,
 		      1, cinfo->output_width);
     inrow++;
     outrow += 2;
@@ -291,7 +291,7 @@ h2v2_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
  */
 
 GLOBAL(void)
-jinit_upsampler (j_decompress_ptr cinfo)
+jinit2_upsampler (j_decompress_ptr cinfo)
 {
   my_upsample_ptr upsample;
   int ci;
@@ -353,7 +353,7 @@ jinit_upsampler (j_decompress_ptr cinfo)
     if (need_buffer) {
       upsample->color_buf[ci] = (*cinfo->mem->alloc_sarray)
 	((j_common_ptr) cinfo, JPOOL_IMAGE,
-	 (JDIMENSION) jround_up((long) cinfo->output_width,
+	 (JDIMENSION) jround2_up((long) cinfo->output_width,
 				(long) cinfo->max_h_samp_factor),
 	 (JDIMENSION) cinfo->max_v_samp_factor);
     }

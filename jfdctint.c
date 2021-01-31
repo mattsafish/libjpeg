@@ -155,7 +155,7 @@
  */
 
 GLOBAL(void)
-jpeg_fdct_islow (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
+jpeg2_fdct_islow (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 {
   INT32 tmp0, tmp1, tmp2, tmp3;
   INT32 tmp10, tmp11, tmp12, tmp13;

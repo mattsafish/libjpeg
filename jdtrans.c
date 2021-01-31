@@ -43,7 +43,7 @@ LOCAL(void) transdecode_master_selection JPP((j_decompress_ptr cinfo));
  */
 
 GLOBAL(jvirt_barray_ptr *)
-jpeg_read_coefficients (j_decompress_ptr cinfo)
+jpeg2_read_coefficients (j_decompress_ptr cinfo)
 {
   if (cinfo->global_state == DSTATE_READY) {
     /* First call: initialize active modules */
@@ -105,13 +105,13 @@ transdecode_master_selection (j_decompress_ptr cinfo)
 
   /* Entropy decoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_decoder(cinfo);
+    jinit2_arith_decoder(cinfo);
   else {
-    jinit_huff_decoder(cinfo);
+    jinit2_huff_decoder(cinfo);
   }
 
   /* Always get a full-image coefficient buffer. */
-  jinit_d_coef_controller(cinfo, TRUE);
+  jinit2_d_coef_controller(cinfo, TRUE);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);

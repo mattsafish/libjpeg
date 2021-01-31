@@ -697,7 +697,7 @@ write_tables_only (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_marker_writer (j_compress_ptr cinfo)
+jinit2_marker_writer (j_compress_ptr cinfo)
 {
   my_marker_ptr marker;
 

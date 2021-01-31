@@ -286,7 +286,7 @@ jinit_write_rle (j_decompress_ptr cinfo)
   dest->pub.finish_output = finish_output_rle;
 
   /* Calculate output image dimensions so we can allocate space */
-  jpeg_calc_output_dimensions(cinfo);
+  jpeg2_calc_output_dimensions(cinfo);
 
   /* Allocate a work array for output to the RLE library. */
   dest->rle_row = (*cinfo->mem->alloc_sarray)

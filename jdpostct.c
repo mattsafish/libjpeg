@@ -247,7 +247,7 @@ post_process_2pass (j_decompress_ptr cinfo,
  */
 
 GLOBAL(void)
-jinit_d_post_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
+jinit2_d_post_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
 {
   my_post_ptr post;
 
@@ -273,7 +273,7 @@ jinit_d_post_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
       post->whole_image = (*cinfo->mem->request_virt_sarray)
 	((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
 	 cinfo->output_width * cinfo->out_color_components,
-	 (JDIMENSION) jround_up((long) cinfo->output_height,
+	 (JDIMENSION) jround2_up((long) cinfo->output_height,
 				(long) post->strip_height),
 	 post->strip_height);
 #else

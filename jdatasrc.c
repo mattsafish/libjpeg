@@ -207,7 +207,7 @@ term_source (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
+jpeg2_stdio_src (j_decompress_ptr cinfo, FILE * infile)
 {
   my_src_ptr src;
 
@@ -232,7 +232,7 @@ jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
   src->pub.init_source = init_source;
   src->pub.fill_input_buffer = fill_input_buffer;
   src->pub.skip_input_data = skip_input_data;
-  src->pub.resync_to_restart = jpeg_resync_to_restart; /* use default method */
+  src->pub.resync_to_restart = jpeg2_resync_to_restart; /* use default method */
   src->pub.term_source = term_source;
   src->infile = infile;
   src->pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
@@ -268,7 +268,7 @@ jpeg_mem_src (j_decompress_ptr cinfo,
   src->init_source = init_mem_source;
   src->fill_input_buffer = fill_mem_input_buffer;
   src->skip_input_data = skip_input_data;
-  src->resync_to_restart = jpeg_resync_to_restart; /* use default method */
+  src->resync_to_restart = jpeg2_resync_to_restart; /* use default method */
   src->term_source = term_source;
   src->bytes_in_buffer = (size_t) insize;
   src->next_input_byte = (JOCTET *) inbuffer;

@@ -293,46 +293,46 @@ struct jpeg_color_quantizer {
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 #ifdef NEED_SHORT_EXTERNAL_NAMES
-#define jinit_compress_master	jICompress
-#define jinit_c_master_control	jICMaster
-#define jinit_c_main_controller	jICMainC
-#define jinit_c_prep_controller	jICPrepC
-#define jinit_c_coef_controller	jICCoefC
-#define jinit_color_converter	jICColor
-#define jinit_downsampler	jIDownsampler
-#define jinit_forward_dct	jIFDCT
-#define jinit_huff_encoder	jIHEncoder
-#define jinit_arith_encoder	jIAEncoder
-#define jinit_marker_writer	jIMWriter
-#define jinit_master_decompress	jIDMaster
-#define jinit_d_main_controller	jIDMainC
-#define jinit_d_coef_controller	jIDCoefC
-#define jinit_d_post_controller	jIDPostC
-#define jinit_input_controller	jIInCtlr
-#define jinit_marker_reader	jIMReader
-#define jinit_huff_decoder	jIHDecoder
-#define jinit_arith_decoder	jIADecoder
-#define jinit_inverse_dct	jIIDCT
-#define jinit_upsampler		jIUpsampler
-#define jinit_color_deconverter	jIDColor
-#define jinit_1pass_quantizer	jI1Quant
-#define jinit_2pass_quantizer	jI2Quant
-#define jinit_merged_upsampler	jIMUpsampler
+#define jinit2_compress_master	jICompress
+#define jinit2_c_master_control	jICMaster
+#define jinit2_c_main_controller	jICMainC
+#define jinit2_c_prep_controller	jICPrepC
+#define jinit2_c_coef_controller	jICCoefC
+#define jinit2_color_converter	jICColor
+#define jinit2_downsampler	jIDownsampler
+#define jinit2_forward_dct	jIFDCT
+#define jinit2_huff_encoder	jIHEncoder
+#define jinit2_arith_encoder	jIAEncoder
+#define jinit2_marker_writer	jIMWriter
+#define jinit2_master_decompress	jIDMaster
+#define jinit2_d_main_controller	jIDMainC
+#define jinit2_d_coef_controller	jIDCoefC
+#define jinit2_d_post_controller	jIDPostC
+#define jinit2_input_controller	jIInCtlr
+#define jinit2_marker_reader	jIMReader
+#define jinit2_huff_decoder	jIHDecoder
+#define jinit2_arith_decoder	jIADecoder
+#define jinit2_inverse_dct	jIIDCT
+#define jinit2_upsampler		jIUpsampler
+#define jinit2_color_deconverter	jIDColor
+#define jinit2_1pass_quantizer	jI1Quant
+#define jinit2_2pass_quantizer	jI2Quant
+#define jinit2_merged_upsampler	jIMUpsampler
 #define jinit_memory_mgr	jIMemMgr
-#define jdiv_round_up		jDivRound
-#define jround_up		jRound
+#define jdiv2_round_up		jDivRound
+#define jround2_up		jRound
 #define jzero_far		jZeroFar
-#define jcopy_sample_rows	jCopySamples
-#define jcopy_block_row		jCopyBlocks
+#define jcopy2_sample_rows	jCopySamples
+#define jcopy2_block_row		jCopyBlocks
 #define jpeg_zigzag_order	jZIGTable
-#define jpeg_natural_order	jZAGTable
+#define jpeg2_natural_order	jZAGTable
 #define jpeg_natural_order7	jZAG7Table
 #define jpeg_natural_order6	jZAG6Table
 #define jpeg_natural_order5	jZAG5Table
 #define jpeg_natural_order4	jZAG4Table
 #define jpeg_natural_order3	jZAG3Table
 #define jpeg_natural_order2	jZAG2Table
-#define jpeg_aritab		jAriTab
+#define jpeg2_aritab		jAriTab
 #endif /* NEED_SHORT_EXTERNAL_NAMES */
 
 
@@ -357,55 +357,55 @@ EXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
 
 
 /* Compression module initialization routines */
-EXTERN(void) jinit_compress_master JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_c_master_control JPP((j_compress_ptr cinfo,
+EXTERN(void) jinit2_compress_master JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_c_master_control JPP((j_compress_ptr cinfo,
 					 boolean transcode_only));
-EXTERN(void) jinit_c_main_controller JPP((j_compress_ptr cinfo,
+EXTERN(void) jinit2_c_main_controller JPP((j_compress_ptr cinfo,
 					  boolean need_full_buffer));
-EXTERN(void) jinit_c_prep_controller JPP((j_compress_ptr cinfo,
+EXTERN(void) jinit2_c_prep_controller JPP((j_compress_ptr cinfo,
 					  boolean need_full_buffer));
-EXTERN(void) jinit_c_coef_controller JPP((j_compress_ptr cinfo,
+EXTERN(void) jinit2_c_coef_controller JPP((j_compress_ptr cinfo,
 					  boolean need_full_buffer));
-EXTERN(void) jinit_color_converter JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_downsampler JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_forward_dct JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_huff_encoder JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_arith_encoder JPP((j_compress_ptr cinfo));
-EXTERN(void) jinit_marker_writer JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_color_converter JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_downsampler JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_forward_dct JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_huff_encoder JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_arith_encoder JPP((j_compress_ptr cinfo));
+EXTERN(void) jinit2_marker_writer JPP((j_compress_ptr cinfo));
 /* Decompression module initialization routines */
-EXTERN(void) jinit_master_decompress JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_d_main_controller JPP((j_decompress_ptr cinfo,
+EXTERN(void) jinit2_master_decompress JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_d_main_controller JPP((j_decompress_ptr cinfo,
 					  boolean need_full_buffer));
-EXTERN(void) jinit_d_coef_controller JPP((j_decompress_ptr cinfo,
+EXTERN(void) jinit2_d_coef_controller JPP((j_decompress_ptr cinfo,
 					  boolean need_full_buffer));
-EXTERN(void) jinit_d_post_controller JPP((j_decompress_ptr cinfo,
+EXTERN(void) jinit2_d_post_controller JPP((j_decompress_ptr cinfo,
 					  boolean need_full_buffer));
-EXTERN(void) jinit_input_controller JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_marker_reader JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_huff_decoder JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_arith_decoder JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_inverse_dct JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_upsampler JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_color_deconverter JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_1pass_quantizer JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_2pass_quantizer JPP((j_decompress_ptr cinfo));
-EXTERN(void) jinit_merged_upsampler JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_input_controller JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_marker_reader JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_huff_decoder JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_arith_decoder JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_inverse_dct JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_upsampler JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_color_deconverter JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_1pass_quantizer JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_2pass_quantizer JPP((j_decompress_ptr cinfo));
+EXTERN(void) jinit2_merged_upsampler JPP((j_decompress_ptr cinfo));
 /* Memory manager initialization */
 EXTERN(void) jinit_memory_mgr JPP((j_common_ptr cinfo));
 
 /* Utility routines in jutils.c */
 EXTERN(long) jdiv_round_up JPP((long a, long b));
-EXTERN(long) jround_up JPP((long a, long b));
-EXTERN(void) jcopy_sample_rows JPP((JSAMPARRAY input_array, int source_row,
+EXTERN(long) jround2_up JPP((long a, long b));
+EXTERN(void) jcopy2_sample_rows JPP((JSAMPARRAY input_array, int source_row,
 				    JSAMPARRAY output_array, int dest_row,
 				    int num_rows, JDIMENSION num_cols));
-EXTERN(void) jcopy_block_row JPP((JBLOCKROW input_row, JBLOCKROW output_row,
+EXTERN(void) jcopy2_block_row JPP((JBLOCKROW input_row, JBLOCKROW output_row,
 				  JDIMENSION num_blocks));
 /* Constant tables in jutils.c */
 #if 0				/* This table is not actually needed in v6a */
 extern const int jpeg_zigzag_order[]; /* natural coef order to zigzag order */
 #endif
-extern const int jpeg_natural_order[]; /* zigzag coef order to natural order */
+extern const int jpeg2_natural_order[]; /* zigzag coef order to natural order */
 extern const int jpeg_natural_order7[]; /* zz to natural order for 7x7 block */
 extern const int jpeg_natural_order6[]; /* zz to natural order for 6x6 block */
 extern const int jpeg_natural_order5[]; /* zz to natural order for 5x5 block */
@@ -414,7 +414,7 @@ extern const int jpeg_natural_order3[]; /* zz to natural order for 3x3 block */
 extern const int jpeg_natural_order2[]; /* zz to natural order for 2x2 block */
 
 /* Arithmetic coding probability estimation tables in jaricom.c */
-extern const INT32 jpeg_aritab[];
+extern const INT32 jpeg2_aritab[];
 
 /* Suppress undefined-structure complaints if necessary. */
 

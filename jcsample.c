@@ -200,7 +200,7 @@ fullsize_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
 		     JSAMPARRAY input_data, JSAMPARRAY output_data)
 {
   /* Copy the data */
-  jcopy_sample_rows(input_data, 0, output_data, 0,
+  jcopy2_sample_rows(input_data, 0, output_data, 0,
 		    cinfo->max_v_samp_factor, cinfo->image_width);
   /* Edge-expand */
   expand_right_edge(output_data, cinfo->max_v_samp_factor, cinfo->image_width,
@@ -475,7 +475,7 @@ fullsize_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info *compptr,
  */
 
 GLOBAL(void)
-jinit_downsampler (j_compress_ptr cinfo)
+jinit2_downsampler (j_compress_ptr cinfo)
 {
   my_downsample_ptr downsample;
   int ci;

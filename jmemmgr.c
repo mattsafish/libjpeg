@@ -115,7 +115,7 @@ typedef union large_pool_struct {
  */
 
 typedef struct {
-  struct jpeg_memory_mgr pub;	/* public fields */
+  struct jpeg2_memory_mgr pub;	/* public fields */
 
   /* Each pool identifier (lifetime class) names a linked list of pools. */
   small_pool_ptr small_list[JPOOL_NUMPOOLS];
@@ -297,7 +297,7 @@ alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
       slop = (size_t) (MAX_ALLOC_CHUNK-min_request);
     /* Try to get space, if fail reduce slop and try again */
     for (;;) {
-      hdr_ptr = (small_pool_ptr) jpeg_get_small(cinfo, min_request + slop);
+      hdr_ptr = (small_pool_ptr) jpeg2_get_small(cinfo, min_request + slop);
       if (hdr_ptr != NULL)
 	break;
       slop /= 2;
@@ -360,7 +360,7 @@ alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
   if (pool_id < 0 || pool_id >= JPOOL_NUMPOOLS)
     ERREXIT1(cinfo, JERR_BAD_POOL_ID, pool_id);	/* safety check */
 
-  hdr_ptr = (large_pool_ptr) jpeg_get_large(cinfo, sizeofobject +
+  hdr_ptr = (large_pool_ptr) jpeg2_get_large(cinfo, sizeofobject +
 					    SIZEOF(large_pool_hdr));
   if (hdr_ptr == NULL)
     out_of_memory(cinfo, 4);	/* jpeg_get_large failed */
@@ -617,7 +617,7 @@ realize_virt_arrays (j_common_ptr cinfo)
     return;			/* no unrealized arrays, no work */
 
   /* Determine amount of memory to actually use; this is system-dependent. */
-  avail_mem = jpeg_mem_available(cinfo, space_per_minheight, maximum_space,
+  avail_mem = jpeg2_mem_available(cinfo, space_per_minheight, maximum_space,
 				 mem->total_space_allocated);
 
   /* If the maximum space needed is available, make all the buffers full
@@ -646,7 +646,7 @@ realize_virt_arrays (j_common_ptr cinfo)
       } else {
 	/* It doesn't fit in memory, create backing store. */
 	sptr->rows_in_mem = (JDIMENSION) (max_minheights * sptr->maxaccess);
-	jpeg_open_backing_store(cinfo, & sptr->b_s_info,
+	jpeg2_open_backing_store(cinfo, & sptr->b_s_info,
 				(long) sptr->rows_in_array *
 				(long) sptr->samplesperrow *
 				(long) SIZEOF(JSAMPLE));
@@ -670,7 +670,7 @@ realize_virt_arrays (j_common_ptr cinfo)
       } else {
 	/* It doesn't fit in memory, create backing store. */
 	bptr->rows_in_mem = (JDIMENSION) (max_minheights * bptr->maxaccess);
-	jpeg_open_backing_store(cinfo, & bptr->b_s_info,
+	jpeg2_open_backing_store(cinfo, & bptr->b_s_info,
 				(long) bptr->rows_in_array *
 				(long) bptr->blocksperrow *
 				(long) SIZEOF(JBLOCK));
@@ -973,7 +973,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     space_freed = lhdr_ptr->hdr.bytes_used +
 		  lhdr_ptr->hdr.bytes_left +
 		  SIZEOF(large_pool_hdr);
-    jpeg_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
+    jpeg2_free_large(cinfo, (void FAR *) lhdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     lhdr_ptr = next_lhdr_ptr;
   }
@@ -987,7 +987,7 @@ free_pool (j_common_ptr cinfo, int pool_id)
     space_freed = shdr_ptr->hdr.bytes_used +
 		  shdr_ptr->hdr.bytes_left +
 		  SIZEOF(small_pool_hdr);
-    jpeg_free_small(cinfo, (void *) shdr_ptr, space_freed);
+    jpeg2_free_small(cinfo, (void *) shdr_ptr, space_freed);
     mem->total_space_allocated -= space_freed;
     shdr_ptr = next_shdr_ptr;
   }
@@ -1013,10 +1013,10 @@ self_destruct (j_common_ptr cinfo)
   }
 
   /* Release the memory manager control block too. */
-  jpeg_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
+  jpeg2_free_small(cinfo, (void *) cinfo->mem, SIZEOF(my_memory_mgr));
   cinfo->mem = NULL;		/* ensures I will be called only once */
 
-  jpeg_mem_term(cinfo);		/* system-dependent cleanup */
+  jpeg2_mem_term(cinfo);		/* system-dependent cleanup */
 }
 
 
@@ -1054,13 +1054,13 @@ jinit_memory_mgr (j_common_ptr cinfo)
       (MAX_ALLOC_CHUNK % SIZEOF(ALIGN_TYPE)) != 0)
     ERREXIT(cinfo, JERR_BAD_ALLOC_CHUNK);
 
-  max_to_use = jpeg_mem_init(cinfo); /* system-dependent initialization */
+  max_to_use = jpeg2_mem_init(cinfo); /* system-dependent initialization */
 
   /* Attempt to allocate memory manager's control block */
-  mem = (my_mem_ptr) jpeg_get_small(cinfo, SIZEOF(my_memory_mgr));
+  mem = (my_mem_ptr) jpeg2_get_small(cinfo, SIZEOF(my_memory_mgr));
 
   if (mem == NULL) {
-    jpeg_mem_term(cinfo);	/* system-dependent cleanup */
+    jpeg2_mem_term(cinfo);	/* system-dependent cleanup */
     ERREXIT1(cinfo, JERR_OUT_OF_MEMORY, 0);
   }
 

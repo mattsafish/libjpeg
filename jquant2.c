@@ -1242,7 +1242,7 @@ new_color_map_2_quant (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_2pass_quantizer (j_decompress_ptr cinfo)
+jinit2_2pass_quantizer (j_decompress_ptr cinfo)
 {
   my_cquantize_ptr cquantize;
   int i;

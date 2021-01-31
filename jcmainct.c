@@ -245,7 +245,7 @@ process_data_buffer_main (j_compress_ptr cinfo,
  */
 
 GLOBAL(void)
-jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+jinit2_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_main_ptr mainp;
   int ci;
@@ -273,7 +273,7 @@ jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
       mainp->whole_image[ci] = (*cinfo->mem->request_virt_sarray)
 	((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
 	 compptr->width_in_blocks * ((JDIMENSION) compptr->DCT_h_scaled_size),
-	 ((JDIMENSION) jround_up((long) compptr->height_in_blocks,
+	 ((JDIMENSION) jround2_up((long) compptr->height_in_blocks,
 				 (long) compptr->v_samp_factor)) *
 	 ((JDIMENSION) cinfo->min_DCT_v_scaled_size),
 	 (JDIMENSION) (compptr->v_samp_factor * compptr->DCT_v_scaled_size));

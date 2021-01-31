@@ -108,7 +108,7 @@ read_quant_tables (j_compress_ptr cinfo, char * filename, boolean force_baseline
       }
       table[i] = (unsigned int) val;
     }
-    jpeg_add_quant_table(cinfo, tblno, table, cinfo->q_scale_factor[tblno],
+    jpeg2_add_quant_table(cinfo, tblno, table, cinfo->q_scale_factor[tblno],
 			 force_baseline);
     tblno++;
   }
@@ -282,12 +282,12 @@ set_quality_ratings (j_compress_ptr cinfo, char *arg, boolean force_baseline)
       if (ch != ',')		/* syntax check */
 	return FALSE;
       /* Convert user 0-100 rating to percentage scaling */
-      cinfo->q_scale_factor[tblno] = jpeg_quality_scaling(val);
+      cinfo->q_scale_factor[tblno] = jpeg2_quality_scaling(val);
       while (*arg && *arg++ != ',') /* advance to next segment of arg string */
 	;
     } else {
       /* reached end of parameter, set remaining factors to last value */
-      cinfo->q_scale_factor[tblno] = jpeg_quality_scaling(val);
+      cinfo->q_scale_factor[tblno] = jpeg2_quality_scaling(val);
     }
   }
   jpeg_default_qtables(cinfo, force_baseline);

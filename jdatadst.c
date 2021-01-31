@@ -193,7 +193,7 @@ term_mem_destination (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
+jpeg2_stdio_dest (j_compress_ptr cinfo, FILE * outfile)
 {
   my_dest_ptr dest;
 

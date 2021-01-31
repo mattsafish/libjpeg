@@ -37,7 +37,7 @@ signal_catcher (int signum)
   if (sig_cinfo != NULL) {
     if (sig_cinfo->err != NULL) /* turn off trace output */
       sig_cinfo->err->trace_level = 0;
-    jpeg_destroy(sig_cinfo);	/* clean up memory allocation & temp files */
+    jpeg2_destroy(sig_cinfo);	/* clean up memory allocation & temp files */
   }
   exit(EXIT_FAILURE);
 }

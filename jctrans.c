@@ -36,12 +36,12 @@ LOCAL(void) transencode_coef_controller
  */
 
 GLOBAL(void)
-jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
+jpeg2_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
 {
   if (cinfo->global_state != CSTATE_START)
     ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
   /* Mark all tables to be written */
-  jpeg_suppress_tables(cinfo, FALSE);
+  jpeg2_suppress_tables(cinfo, FALSE);
   /* (Re)initialize error mgr and destination modules */
   (*cinfo->err->reset_error_mgr) ((j_common_ptr) cinfo);
   (*cinfo->dest->init_destination) (cinfo);
@@ -61,7 +61,7 @@ jpeg_write_coefficients (j_compress_ptr cinfo, jvirt_barray_ptr * coef_arrays)
  */
 
 GLOBAL(void)
-jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
+jpeg2_copy_critical_parameters (j_decompress_ptr srcinfo,
 			       j_compress_ptr dstinfo)
 {
   JQUANT_TBL ** qtblptr;
@@ -82,14 +82,14 @@ jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
   dstinfo->min_DCT_h_scaled_size = srcinfo->min_DCT_h_scaled_size;
   dstinfo->min_DCT_v_scaled_size = srcinfo->min_DCT_v_scaled_size;
   /* Initialize all parameters to default values */
-  jpeg_set_defaults(dstinfo);
+  jpeg2_set_defaults(dstinfo);
   /* jpeg_set_defaults may choose wrong colorspace, eg YCbCr if input is RGB.
    * Fix it to get the right header markers for the image colorspace.
    * Note: Entropy table assignment in jpeg_set_colorspace depends
    * on color_transform.
    */
   dstinfo->color_transform = srcinfo->color_transform;
-  jpeg_set_colorspace(dstinfo, srcinfo->jpeg_color_space);
+  jpeg2_set_colorspace(dstinfo, srcinfo->jpeg_color_space);
   dstinfo->data_precision = srcinfo->data_precision;
   dstinfo->CCIR601_sampling = srcinfo->CCIR601_sampling;
   /* Copy the source's quantization tables. */
@@ -97,7 +97,7 @@ jpeg_copy_critical_parameters (j_decompress_ptr srcinfo,
     if (srcinfo->quant_tbl_ptrs[tblno] != NULL) {
       qtblptr = & dstinfo->quant_tbl_ptrs[tblno];
       if (*qtblptr == NULL)
-	*qtblptr = jpeg_alloc_quant_table((j_common_ptr) dstinfo);
+	*qtblptr = jpeg2_alloc_quant_table((j_common_ptr) dstinfo);
       MEMCOPY((*qtblptr)->quantval,
 	      srcinfo->quant_tbl_ptrs[tblno]->quantval,
 	      SIZEOF((*qtblptr)->quantval));
@@ -167,19 +167,19 @@ transencode_master_selection (j_compress_ptr cinfo,
 			      jvirt_barray_ptr * coef_arrays)
 {
   /* Initialize master control (includes parameter checking/processing) */
-  jinit_c_master_control(cinfo, TRUE /* transcode only */);
+  jinit2_c_master_control(cinfo, TRUE /* transcode only */);
 
   /* Entropy encoding: either Huffman or arithmetic coding. */
   if (cinfo->arith_code)
-    jinit_arith_encoder(cinfo);
+    jinit2_arith_encoder(cinfo);
   else {
-    jinit_huff_encoder(cinfo);
+    jinit2_huff_encoder(cinfo);
   }
 
   /* We need a special coefficient buffer controller. */
   transencode_coef_controller(cinfo, coef_arrays);
 
-  jinit_marker_writer(cinfo);
+  jinit2_marker_writer(cinfo);
 
   /* We can now tell the memory manager to allocate virtual arrays. */
   (*cinfo->mem->realize_virt_arrays) ((j_common_ptr) cinfo);

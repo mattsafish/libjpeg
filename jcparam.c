@@ -21,7 +21,7 @@
  */
 
 GLOBAL(void)
-jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
+jpeg2_add_quant_table (j_compress_ptr cinfo, int which_tbl,
 		      const unsigned int *basic_table,
 		      int scale_factor, boolean force_baseline)
 /* Define a quantization table equal to the basic_table times
@@ -44,7 +44,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
   qtblptr = & cinfo->quant_tbl_ptrs[which_tbl];
 
   if (*qtblptr == NULL)
-    *qtblptr = jpeg_alloc_quant_table((j_common_ptr) cinfo);
+    *qtblptr = jpeg2_alloc_quant_table((j_common_ptr) cinfo);
 
   for (i = 0; i < DCTSIZE2; i++) {
     temp = ((long) basic_table[i] * scale_factor + 50L) / 100L;
@@ -95,15 +95,15 @@ jpeg_default_qtables (j_compress_ptr cinfo, boolean force_baseline)
  */
 {
   /* Set up two quantization tables using the specified scaling */
-  jpeg_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
+  jpeg2_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
 		       cinfo->q_scale_factor[0], force_baseline);
-  jpeg_add_quant_table(cinfo, 1, std_chrominance_quant_tbl,
+  jpeg2_add_quant_table(cinfo, 1, std_chrominance_quant_tbl,
 		       cinfo->q_scale_factor[1], force_baseline);
 }
 
 
 GLOBAL(void)
-jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
+jpeg2_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
 			 boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables
  * and a straight percentage-scaling quality scale.  In most cases it's better
@@ -112,15 +112,15 @@ jpeg_set_linear_quality (j_compress_ptr cinfo, int scale_factor,
  */
 {
   /* Set up two quantization tables using the specified scaling */
-  jpeg_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
+  jpeg2_add_quant_table(cinfo, 0, std_luminance_quant_tbl,
 		       scale_factor, force_baseline);
-  jpeg_add_quant_table(cinfo, 1, std_chrominance_quant_tbl,
+  jpeg2_add_quant_table(cinfo, 1, std_chrominance_quant_tbl,
 		       scale_factor, force_baseline);
 }
 
 
 GLOBAL(int)
-jpeg_quality_scaling (int quality)
+jpeg2_quality_scaling (int quality)
 /* Convert a user-specified quality rating to a percentage scaling factor
  * for an underlying quantization table, using our recommended scaling curve.
  * The input 'quality' factor should be 0 (terrible) to 100 (very good).
@@ -146,7 +146,7 @@ jpeg_quality_scaling (int quality)
 
 
 GLOBAL(void)
-jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
+jpeg2_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
 /* Set or change the 'quality' (quantization) setting, using default tables.
  * This is the standard quality-adjusting entry point for typical user
  * interfaces; only those who want detailed control over quantization tables
@@ -154,10 +154,10 @@ jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
  */
 {
   /* Convert user 0-100 rating to percentage scaling */
-  quality = jpeg_quality_scaling(quality);
+  quality = jpeg2_quality_scaling(quality);
 
   /* Set up standard quality tables */
-  jpeg_set_linear_quality(cinfo, quality, force_baseline);
+  jpeg2_set_linear_quality(cinfo, quality, force_baseline);
 }
 
 
@@ -173,7 +173,7 @@ add_huff_table (j_compress_ptr cinfo,
   int nsymbols, len;
 
   if (*htblptr == NULL)
-    *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+    *htblptr = jpeg2_alloc_huff_table((j_common_ptr) cinfo);
 
   /* Copy the number-of-symbols-of-each-code-length counts */
   MEMCOPY((*htblptr)->bits, bits, SIZEOF((*htblptr)->bits));
@@ -282,7 +282,7 @@ std_huff_tables (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_set_defaults (j_compress_ptr cinfo)
+jpeg2_set_defaults (j_compress_ptr cinfo)
 {
   int i;
 
@@ -305,7 +305,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
   cinfo->scale_denom = 1;
   cinfo->data_precision = BITS_IN_JSAMPLE;
   /* Set up two quantization tables using default quality of 75 */
-  jpeg_set_quality(cinfo, 75, TRUE);
+  jpeg2_set_quality(cinfo, 75, TRUE);
   /* Set up two Huffman tables */
   std_huff_tables(cinfo);
 
@@ -374,7 +374,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
 
   /* Choose JPEG colorspace based on input space, set defaults accordingly */
 
-  jpeg_default_colorspace(cinfo);
+  jpeg2_default_colorspace(cinfo);
 }
 
 
@@ -383,33 +383,33 @@ jpeg_set_defaults (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_default_colorspace (j_compress_ptr cinfo)
+jpeg2_default_colorspace (j_compress_ptr cinfo)
 {
   switch (cinfo->in_color_space) {
   case JCS_UNKNOWN:
-    jpeg_set_colorspace(cinfo, JCS_UNKNOWN);
+    jpeg2_set_colorspace(cinfo, JCS_UNKNOWN);
     break;
   case JCS_GRAYSCALE:
-    jpeg_set_colorspace(cinfo, JCS_GRAYSCALE);
+    jpeg2_set_colorspace(cinfo, JCS_GRAYSCALE);
     break;
   case JCS_RGB:
-    jpeg_set_colorspace(cinfo, JCS_YCbCr);
+    jpeg2_set_colorspace(cinfo, JCS_YCbCr);
     break;
   case JCS_YCbCr:
-    jpeg_set_colorspace(cinfo, JCS_YCbCr);
+    jpeg2_set_colorspace(cinfo, JCS_YCbCr);
     break;
   case JCS_CMYK:
-    jpeg_set_colorspace(cinfo, JCS_CMYK); /* By default, no translation */
+    jpeg2_set_colorspace(cinfo, JCS_CMYK); /* By default, no translation */
     break;
   case JCS_YCCK:
-    jpeg_set_colorspace(cinfo, JCS_YCCK);
+    jpeg2_set_colorspace(cinfo, JCS_YCCK);
     break;
   case JCS_BG_RGB:
     /* No translation for now -- conversion to BG_YCC not yet supportet */
-    jpeg_set_colorspace(cinfo, JCS_BG_RGB);
+    jpeg2_set_colorspace(cinfo, JCS_BG_RGB);
     break;
   case JCS_BG_YCC:
-    jpeg_set_colorspace(cinfo, JCS_BG_YCC);
+    jpeg2_set_colorspace(cinfo, JCS_BG_YCC);
     break;
   default:
     ERREXIT(cinfo, JERR_BAD_IN_COLORSPACE);
@@ -422,7 +422,7 @@ jpeg_default_colorspace (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
+jpeg2_set_colorspace (j_compress_ptr cinfo, J_COLOR_SPACE colorspace)
 {
   jpeg_component_info * compptr;
   int ci;
@@ -595,7 +595,7 @@ fill_dc_scans (jpeg_scan_info * scanptr, int ncomps, int Ah, int Al)
  */
 
 GLOBAL(void)
-jpeg_simple_progression (j_compress_ptr cinfo)
+jpeg2_simple_progression (j_compress_ptr cinfo)
 {
   int ncomps = cinfo->num_components;
   int nscans;

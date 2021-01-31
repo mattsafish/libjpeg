@@ -51,7 +51,7 @@ const int jpeg_zigzag_order[DCTSIZE2] = {
  * fake entries.
  */
 
-const int jpeg_natural_order[DCTSIZE2+16] = {
+const int jpeg2_natural_order[DCTSIZE2+16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4,  5,
  12, 19, 26, 33, 40, 48, 41, 34,
@@ -121,7 +121,7 @@ const int jpeg_natural_order2[2*2+16] = {
  */
 
 GLOBAL(long)
-jdiv_round_up (long a, long b)
+jdiv2_round_up (long a, long b)
 /* Compute a/b rounded up to next integer, ie, ceil(a/b) */
 /* Assumes a >= 0, b > 0 */
 {
@@ -130,7 +130,7 @@ jdiv_round_up (long a, long b)
 
 
 GLOBAL(long)
-jround_up (long a, long b)
+jround2_up (long a, long b)
 /* Compute a rounded up to next multiple of b, ie, ceil(a/b)*b */
 /* Assumes a >= 0, b > 0 */
 {
@@ -174,7 +174,7 @@ jzero_far (void FAR * target, size_t bytestozero)
 
 
 GLOBAL(void)
-jcopy_sample_rows (JSAMPARRAY input_array, int source_row,
+jcopy2_sample_rows (JSAMPARRAY input_array, int source_row,
 		   JSAMPARRAY output_array, int dest_row,
 		   int num_rows, JDIMENSION num_cols)
 /* Copy some rows of samples from one place to another.
@@ -208,7 +208,7 @@ jcopy_sample_rows (JSAMPARRAY input_array, int source_row,
 
 
 GLOBAL(void)
-jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
+jcopy2_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
 		 JDIMENSION num_blocks)
 /* Copy a row of coefficient blocks from one place to another. */
 {

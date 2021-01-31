@@ -407,7 +407,7 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  */
 
 GLOBAL(void)
-jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
+jinit2_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 {
   my_coef_ptr coef;
 
@@ -429,9 +429,9 @@ jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 	 ci++, compptr++) {
       coef->whole_image[ci] = (*cinfo->mem->request_virt_barray)
 	((j_common_ptr) cinfo, JPOOL_IMAGE, FALSE,
-	 (JDIMENSION) jround_up((long) compptr->width_in_blocks,
+	 (JDIMENSION) jround2_up((long) compptr->width_in_blocks,
 				(long) compptr->h_samp_factor),
-	 (JDIMENSION) jround_up((long) compptr->height_in_blocks,
+	 (JDIMENSION) jround2_up((long) compptr->height_in_blocks,
 				(long) compptr->v_samp_factor),
 	 (JDIMENSION) compptr->v_samp_factor);
     }

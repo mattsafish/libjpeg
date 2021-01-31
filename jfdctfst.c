@@ -112,7 +112,7 @@
  */
 
 GLOBAL(void)
-jpeg_fdct_ifast (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
+jpeg2_fdct_ifast (DCTELEM * data, JSAMPARRAY sample_data, JDIMENSION start_col)
 {
   DCTELEM tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   DCTELEM tmp10, tmp11, tmp12, tmp13;

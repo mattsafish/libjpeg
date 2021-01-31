@@ -1418,7 +1418,7 @@ finish_pass_gather (j_compress_ptr cinfo)
       if (! did_dc[tbl]) {
 	htblptr = & cinfo->dc_huff_tbl_ptrs[tbl];
 	if (*htblptr == NULL)
-	  *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+	  *htblptr = jpeg2_alloc_huff_table((j_common_ptr) cinfo);
 	jpeg_gen_optimal_table(cinfo, *htblptr, entropy->dc_count_ptrs[tbl]);
 	did_dc[tbl] = TRUE;
       }
@@ -1429,7 +1429,7 @@ finish_pass_gather (j_compress_ptr cinfo)
       if (! did_ac[tbl]) {
 	htblptr = & cinfo->ac_huff_tbl_ptrs[tbl];
 	if (*htblptr == NULL)
-	  *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
+	  *htblptr = jpeg2_alloc_huff_table((j_common_ptr) cinfo);
 	jpeg_gen_optimal_table(cinfo, *htblptr, entropy->ac_count_ptrs[tbl]);
 	did_ac[tbl] = TRUE;
       }
@@ -1551,7 +1551,7 @@ start_pass_huff (j_compress_ptr cinfo, boolean gather_statistics)
  */
 
 GLOBAL(void)
-jinit_huff_encoder (j_compress_ptr cinfo)
+jinit2_huff_encoder (j_compress_ptr cinfo)
 {
   huff_entropy_ptr entropy;
   int i;

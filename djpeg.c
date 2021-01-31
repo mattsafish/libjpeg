@@ -445,7 +445,7 @@ main (int argc, char **argv)
     progname = "djpeg";		/* in case C library doesn't provide it */
 
   /* Initialize the JPEG decompression object with default error handling. */
-  cinfo.err = jpeg_std_error(&jerr);
+  cinfo.err = jpeg2_std_error(&jerr);
   jpeg_create_decompress(&cinfo);
   /* Add some application-specific error messages (from cderror.h) */
   jerr.addon_message_table = cdjpeg_message_table;
@@ -458,8 +458,8 @@ main (int argc, char **argv)
    * If you like, additional APPn marker types can be selected for display,
    * but don't try to override APP0 or APP14 this way (see libjpeg.doc).
    */
-  jpeg_set_marker_processor(&cinfo, JPEG_COM, print_text_marker);
-  jpeg_set_marker_processor(&cinfo, JPEG_APP0+12, print_text_marker);
+  jpeg2_set_marker_processor(&cinfo, JPEG_COM, print_text_marker);
+  jpeg2_set_marker_processor(&cinfo, JPEG_APP0+12, print_text_marker);
 
   /* Now safe to enable signal catcher. */
 #ifdef NEED_SIGNAL_CATCHER
@@ -527,10 +527,10 @@ main (int argc, char **argv)
 #endif
 
   /* Specify data source for decompression */
-  jpeg_stdio_src(&cinfo, input_file);
+  jpeg2_stdio_src(&cinfo, input_file);
 
   /* Read file header, set default decompression parameters */
-  (void) jpeg_read_header(&cinfo, TRUE);
+  (void) jpeg2_read_header(&cinfo, TRUE);
 
   /* Adjust default decompression parameters by re-parsing the options */
   file_index = parse_switches(&cinfo, argc, argv, 0, TRUE);
@@ -574,14 +574,14 @@ main (int argc, char **argv)
   dest_mgr->output_file = output_file;
 
   /* Start decompressor */
-  (void) jpeg_start_decompress(&cinfo);
+  (void) jpeg2_start_decompress(&cinfo);
 
   /* Write output file header */
   (*dest_mgr->start_output) (&cinfo, dest_mgr);
 
   /* Process data */
   while (cinfo.output_scanline < cinfo.output_height) {
-    num_scanlines = jpeg_read_scanlines(&cinfo, dest_mgr->buffer,
+    num_scanlines = jpeg2_read_scanlines(&cinfo, dest_mgr->buffer,
 					dest_mgr->buffer_height);
     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
   }
@@ -598,8 +598,8 @@ main (int argc, char **argv)
    * of lifespan JPOOL_IMAGE; it needs to finish before releasing memory.
    */
   (*dest_mgr->finish_output) (&cinfo, dest_mgr);
-  (void) jpeg_finish_decompress(&cinfo);
-  jpeg_destroy_decompress(&cinfo);
+  (void) jpeg2_finish_decompress(&cinfo);
+  jpeg2_destroy_decompress(&cinfo);
 
   /* Close files, if we opened them */
   if (input_file != stdin)

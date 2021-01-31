@@ -99,7 +99,7 @@ write_JPEG_file (char * filename, int quality)
    * This routine fills in the contents of struct jerr, and returns jerr's
    * address which we place into the link field in cinfo.
    */
-  cinfo.err = jpeg_std_error(&jerr);
+  cinfo.err = jpeg2_std_error(&jerr);
   /* Now we can initialize the JPEG compression object. */
   jpeg_create_compress(&cinfo);
 
@@ -115,7 +115,7 @@ write_JPEG_file (char * filename, int quality)
     fprintf(stderr, "can't open %s\n", filename);
     exit(1);
   }
-  jpeg_stdio_dest(&cinfo, outfile);
+  jpeg2_stdio_dest(&cinfo, outfile);
 
   /* Step 3: set parameters for compression */
 
@@ -130,18 +130,18 @@ write_JPEG_file (char * filename, int quality)
    * (You must set at least cinfo.in_color_space before calling this,
    * since the defaults depend on the source color space.)
    */
-  jpeg_set_defaults(&cinfo);
+  jpeg2_set_defaults(&cinfo);
   /* Now you can set any non-default parameters you wish to.
    * Here we just illustrate the use of quality (quantization table) scaling:
    */
-  jpeg_set_quality(&cinfo, quality, TRUE /* limit to baseline-JPEG values */);
+  jpeg2_set_quality(&cinfo, quality, TRUE /* limit to baseline-JPEG values */);
 
   /* Step 4: Start compressor */
 
   /* TRUE ensures that we will write a complete interchange-JPEG file.
    * Pass TRUE unless you are very sure of what you're doing.
    */
-  jpeg_start_compress(&cinfo, TRUE);
+  jpeg2_start_compress(&cinfo, TRUE);
 
   /* Step 5: while (scan lines remain to be written) */
   /*           jpeg_write_scanlines(...); */
@@ -159,19 +159,19 @@ write_JPEG_file (char * filename, int quality)
      * more than one scanline at a time if that's more convenient.
      */
     row_pointer[0] = & image_buffer[cinfo.next_scanline * row_stride];
-    (void) jpeg_write_scanlines(&cinfo, row_pointer, 1);
+    (void) jpeg2_write_scanlines(&cinfo, row_pointer, 1);
   }
 
   /* Step 6: Finish compression */
 
-  jpeg_finish_compress(&cinfo);
+  jpeg2_finish_compress(&cinfo);
   /* After finish_compress, we can close the output file. */
   fclose(outfile);
 
   /* Step 7: release JPEG compression object */
 
   /* This is an important step since it will release a good deal of memory. */
-  jpeg_destroy_compress(&cinfo);
+  jpeg2_destroy_compress(&cinfo);
 
   /* And we're done! */
 }
@@ -318,7 +318,7 @@ read_JPEG_file (char * filename)
     /* If we get here, the JPEG code has signaled an error.
      * We need to clean up the JPEG object, close the input file, and return.
      */
-    jpeg_destroy_decompress(&cinfo);
+    jpeg2_destroy_decompress(&cinfo);
     fclose(infile);
     return 0;
   }
@@ -327,11 +327,11 @@ read_JPEG_file (char * filename)
 
   /* Step 2: specify data source (eg, a file) */
 
-  jpeg_stdio_src(&cinfo, infile);
+  jpeg2_stdio_src(&cinfo, infile);
 
   /* Step 3: read file parameters with jpeg_read_header() */
 
-  (void) jpeg_read_header(&cinfo, TRUE);
+  (void) jpeg2_read_header(&cinfo, TRUE);
   /* We can ignore the return value from jpeg_read_header since
    *   (a) suspension is not possible with the stdio data source, and
    *   (b) we passed TRUE to reject a tables-only JPEG file as an error.
@@ -346,7 +346,7 @@ read_JPEG_file (char * filename)
 
   /* Step 5: Start decompressor */
 
-  (void) jpeg_start_decompress(&cinfo);
+  (void) jpeg2_start_decompress(&cinfo);
   /* We can ignore the return value since suspension is not possible
    * with the stdio data source.
    */
@@ -374,14 +374,14 @@ read_JPEG_file (char * filename)
      * Here the array is only one element long, but you could ask for
      * more than one scanline at a time if that's more convenient.
      */
-    (void) jpeg_read_scanlines(&cinfo, buffer, 1);
+    (void) jpeg2_read_scanlines(&cinfo, buffer, 1);
     /* Assume put_scanline_someplace wants a pointer and sample count. */
     put_scanline_someplace(buffer[0], row_stride);
   }
 
   /* Step 7: Finish decompression */
 
-  (void) jpeg_finish_decompress(&cinfo);
+  (void) jpeg2_finish_decompress(&cinfo);
   /* We can ignore the return value since suspension is not possible
    * with the stdio data source.
    */
@@ -389,7 +389,7 @@ read_JPEG_file (char * filename)
   /* Step 8: Release JPEG decompression object */
 
   /* This is an important step since it will release a good deal of memory. */
-  jpeg_destroy_decompress(&cinfo);
+  jpeg2_destroy_decompress(&cinfo);
 
   /* After finish_decompress, we can close the input file.
    * Here we postpone it until after no more JPEG errors are possible,

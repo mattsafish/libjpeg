@@ -312,7 +312,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 
     } else if (keymatch(arg, "grayscale", 2) || keymatch(arg, "greyscale",2)) {
       /* Force a monochrome JPEG file to be generated. */
-      jpeg_set_colorspace(cinfo, JCS_GRAYSCALE);
+      jpeg2_set_colorspace(cinfo, JCS_GRAYSCALE);
 
     } else if (keymatch(arg, "rgb", 3) || keymatch(arg, "rgb1", 4)) {
       /* Force an RGB JPEG file to be generated. */
@@ -322,13 +322,13 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
        */
       cinfo->color_transform = arg[3] ? JCT_SUBTRACT_GREEN : JCT_NONE;
 #endif
-      jpeg_set_colorspace(cinfo, JCS_RGB);
+      jpeg2_set_colorspace(cinfo, JCS_RGB);
 
     } else if (keymatch(arg, "bgycc", 5)) {
       /* Force a big gamut YCC JPEG file to be generated. */
 #if JPEG_LIB_VERSION_MAJOR >= 9 && \
       (JPEG_LIB_VERSION_MAJOR > 9 || JPEG_LIB_VERSION_MINOR >= 1)
-      jpeg_set_colorspace(cinfo, JCS_BG_YCC);
+      jpeg2_set_colorspace(cinfo, JCS_BG_YCC);
 #else
       fprintf(stderr, "%s: sorry, BG_YCC colorspace not supported\n",
 	      progname);
@@ -497,7 +497,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 
 #ifdef C_PROGRESSIVE_SUPPORTED
     if (simple_progressive)	/* process -progressive; -scans can override */
-      jpeg_simple_progression(cinfo);
+      jpeg2_simple_progression(cinfo);
 #endif
 
 #ifdef C_MULTISCAN_FILES_SUPPORTED
@@ -539,7 +539,7 @@ main (int argc, char **argv)
     progname = "cjpeg";		/* in case C library doesn't provide it */
 
   /* Initialize the JPEG compression object with default error handling. */
-  cinfo.err = jpeg_std_error(&jerr);
+  cinfo.err = jpeg2_std_error(&jerr);
   jpeg_create_compress(&cinfo);
   /* Add some application-specific error messages (from cderror.h) */
   jerr.addon_message_table = cdjpeg_message_table;
@@ -558,7 +558,7 @@ main (int argc, char **argv)
    */
 
   cinfo.in_color_space = JCS_RGB; /* arbitrary guess */
-  jpeg_set_defaults(&cinfo);
+  jpeg2_set_defaults(&cinfo);
 
   /* Scan command line to find file names.
    * It is convenient to use just one switch-parsing routine, but the switch
@@ -626,27 +626,27 @@ main (int argc, char **argv)
   (*src_mgr->start_input) (&cinfo, src_mgr);
 
   /* Now that we know input colorspace, fix colorspace-dependent defaults */
-  jpeg_default_colorspace(&cinfo);
+  jpeg2_default_colorspace(&cinfo);
 
   /* Adjust default compression parameters by re-parsing the options */
   file_index = parse_switches(&cinfo, argc, argv, 0, TRUE);
 
   /* Specify data destination for compression */
-  jpeg_stdio_dest(&cinfo, output_file);
+  jpeg2_stdio_dest(&cinfo, output_file);
 
   /* Start compressor */
-  jpeg_start_compress(&cinfo, TRUE);
+  jpeg2_start_compress(&cinfo, TRUE);
 
   /* Process data */
   while (cinfo.next_scanline < cinfo.image_height) {
     num_scanlines = (*src_mgr->get_pixel_rows) (&cinfo, src_mgr);
-    (void) jpeg_write_scanlines(&cinfo, src_mgr->buffer, num_scanlines);
+    (void) jpeg2_write_scanlines(&cinfo, src_mgr->buffer, num_scanlines);
   }
 
   /* Finish compression and release memory */
   (*src_mgr->finish_input) (&cinfo, src_mgr);
-  jpeg_finish_compress(&cinfo);
-  jpeg_destroy_compress(&cinfo);
+  jpeg2_finish_compress(&cinfo);
+  jpeg2_destroy_compress(&cinfo);
 
   /* Close files, if we opened them */
   if (input_file != stdin)

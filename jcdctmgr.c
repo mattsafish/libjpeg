@@ -329,19 +329,19 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
       switch (cinfo->dct_method) {
 #ifdef DCT_ISLOW_SUPPORTED
       case JDCT_ISLOW:
-	fdct->do_dct[ci] = jpeg_fdct_islow;
+	fdct->do_dct[ci] = jpeg2_fdct_islow;
 	method = JDCT_ISLOW;
 	break;
 #endif
 #ifdef DCT_IFAST_SUPPORTED
       case JDCT_IFAST:
-	fdct->do_dct[ci] = jpeg_fdct_ifast;
+	fdct->do_dct[ci] = jpeg2_fdct_ifast;
 	method = JDCT_IFAST;
 	break;
 #endif
 #ifdef DCT_FLOAT_SUPPORTED
       case JDCT_FLOAT:
-	fdct->do_float_dct[ci] = jpeg_fdct_float;
+	fdct->do_float_dct[ci] = jpeg2_fdct_float;
 	method = JDCT_FLOAT;
 	break;
 #endif
@@ -455,7 +455,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
  */
 
 GLOBAL(void)
-jinit_forward_dct (j_compress_ptr cinfo)
+jinit2_forward_dct (j_compress_ptr cinfo)
 {
   my_fdct_ptr fdct;
   int ci;
